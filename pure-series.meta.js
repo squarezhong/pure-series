@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pure Series
 // @namespace    https://github.com/squarezhong/pure-series
-// @version      1.0.0
+// @version      1.0.1
 // @description  一次安装，按站点自动启用 Pure 系列网页净化脚本。
 // @author       squarezhong
 // @homepageURL  https://github.com/squarezhong/pure-series
@@ -23,8 +23,11 @@
 // @match        https://www.bilibili.com/*
 // @match        https://www.douyin.com/*
 // @match        https://www.instagram.com/*
+// @match        https://www.linkedin.com/*
 // @match        https://www.weibo.com/*
+// @match        https://www.xiaohongshu.com/*
 // @match        https://x.com/*
+// @match        https://xiaohongshu.com/*
 // @run-at       document-start
 // @grant        GM_addValueChangeListener
 // @grant        GM_getValue

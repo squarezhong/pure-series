@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "sources": [
     {
       "id": "pure-bilibili/pure-bilibili.user.js",
@@ -212,6 +212,130 @@
           [
             "https",
             "www.instagram.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-linkedin/pure-linkedin.user.js",
+      "repository": "squarezhong/pure-linkedin",
+      "path": "pure-linkedin.user.js",
+      "commit": "08a2cad1a58a090948dce6c8e139166e77de0011",
+      "blob": "a24172998bfcbe47d64718381dbc2de366ed103b",
+      "sha256": "99d16bb01390809e242b1b988a0202824cb1b1928e0df0c44a1d5bc096032c39",
+      "metadata": {
+        "name": [
+          "Pure LinkedIn"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-linkedin"
+        ],
+        "version": [
+          "0.1.1"
+        ],
+        "description": [
+          "首页 Recent 与关注优先，清理推荐和显式广告，保留搜索、职业功能与日常互动。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "match": [
+          "https://www.linkedin.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-linkedin/pure-linkedin.user.js",
+        "matches": [
+          [
+            "https",
+            "www.linkedin.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-rednote/pure-rednote.user.js",
+      "repository": "squarezhong/pure-rednote",
+      "path": "pure-rednote.user.js",
+      "commit": "f5f12793c3df33892dd1f3f301c8212f079dda06",
+      "blob": "8457e15e3c21a17c5c11d5b6cc0c18707e8e4c7f",
+      "sha256": "1ae8d32d8e37342fcc8bfd2d7116dcd41f6ddbfe85c1c55adc84d86c479a4e08",
+      "metadata": {
+        "name": [
+          "Pure Rednote"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-rednote"
+        ],
+        "version": [
+          "0.1.1"
+        ],
+        "description": [
+          "首页打开关注名单，隐藏推荐大厅、搜索热榜和通知徽标，保留主动搜索与日常互动。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "homepageURL": [
+          "https://github.com/squarezhong/pure-rednote"
+        ],
+        "supportURL": [
+          "https://github.com/squarezhong/pure-rednote/issues"
+        ],
+        "updateURL": [
+          "https://raw.githubusercontent.com/squarezhong/pure-rednote/main/pure-rednote.user.js"
+        ],
+        "downloadURL": [
+          "https://raw.githubusercontent.com/squarezhong/pure-rednote/main/pure-rednote.user.js"
+        ],
+        "match": [
+          "https://xiaohongshu.com/*",
+          "https://www.xiaohongshu.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-rednote/pure-rednote.user.js",
+        "matches": [
+          [
+            "https",
+            "xiaohongshu.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "www.xiaohongshu.com",
             "^/.*$"
           ]
         ],
