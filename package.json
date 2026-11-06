@@ -1,0 +1,11 @@
+{
+  "name": "pure-series",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "check": "node --check scripts/build.mjs && node --check scripts/runtime.js && node --check pure-series.user.js"
+  }
+}

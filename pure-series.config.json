@@ -1,0 +1,10 @@
+{
+  "owner": "squarezhong",
+  "repository": "pure-series",
+  "branch": "main",
+  "prefix": "pure",
+  "excludeRepositories": [],
+  "excludePaths": [],
+  "ignoredDirectories": ["node_modules", "vendor", "test", "tests", "fixtures", ".git"],
+  "includeForks": false
+}

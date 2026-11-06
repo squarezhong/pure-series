@@ -1,0 +1,410 @@
+{
+  "version": "1.0.0",
+  "sources": [
+    {
+      "id": "pure-bilibili/pure-bilibili.user.js",
+      "repository": "squarezhong/pure-bilibili",
+      "path": "pure-bilibili.user.js",
+      "commit": "e22330889b724f599cce0d2688182b721136e38b",
+      "blob": "bd283d77d07b4eaba0718782c3bf7453f830acbb",
+      "sha256": "7a7c97cab9f2cb59d42761e76f20f2cb331629d962a6504fd3344df139ff7536",
+      "metadata": {
+        "name": [
+          "Pure Bilibili"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-bilibili"
+        ],
+        "version": [
+          "0.1.6"
+        ],
+        "description": [
+          "首页进入关注动态，清理推荐和显式推广，保留主动搜索与个人记录，顶栏入口可配置。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "match": [
+          "https://bilibili.com/*",
+          "https://www.bilibili.com/*",
+          "https://t.bilibili.com/*",
+          "https://search.bilibili.com/*",
+          "https://space.bilibili.com/*",
+          "https://live.bilibili.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-bilibili/pure-bilibili.user.js",
+        "matches": [
+          [
+            "https",
+            "bilibili.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "www.bilibili.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "t.bilibili.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "search.bilibili.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "space.bilibili.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "live.bilibili.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-douyin/pure-douyin.user.js",
+      "repository": "squarezhong/pure-douyin",
+      "path": "pure-douyin.user.js",
+      "commit": "94a16eb7768c40f5da9838fb98ac40dc684d9710",
+      "blob": "40a3692881cf812ebbc0949224320eb3526b1ace",
+      "sha256": "776bde1226a12238be0525a2217170f675f25337ea90e83e2e465585ee9b8884",
+      "metadata": {
+        "name": [
+          "Pure Douyin"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-douyin"
+        ],
+        "version": [
+          "0.1.0"
+        ],
+        "description": [
+          "关注优先，清理推荐、热搜和显式广告，关闭连播，净化直播间并保留主动搜索与互动。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "match": [
+          "https://www.douyin.com/*",
+          "https://douyin.com/*",
+          "https://live.douyin.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-douyin/pure-douyin.user.js",
+        "matches": [
+          [
+            "https",
+            "www.douyin.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "douyin.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "live.douyin.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-ins/pure-ins.user.js",
+      "repository": "squarezhong/pure-ins",
+      "path": "pure-ins.user.js",
+      "commit": "a44c3a55c59e632600c0eec0457ddac437107d80",
+      "blob": "6f1312058f52a9074454ea2dc2ddc016eba265b5",
+      "sha256": "fa7a75e88f4b16fd154af11aba7e13456f0d76e204d232aed09c84ad850906ed",
+      "metadata": {
+        "name": [
+          "Pure Ins"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-ins"
+        ],
+        "version": [
+          "0.2.0"
+        ],
+        "description": [
+          "关注优先，清理 Instagram 推荐与显式广告，保留主动搜索、帖子、Stories 和日常互动。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "homepageURL": [
+          "https://github.com/squarezhong/pure-ins"
+        ],
+        "supportURL": [
+          "https://github.com/squarezhong/pure-ins/issues"
+        ],
+        "updateURL": [
+          "https://raw.githubusercontent.com/squarezhong/pure-ins/main/pure-ins.user.js"
+        ],
+        "downloadURL": [
+          "https://raw.githubusercontent.com/squarezhong/pure-ins/main/pure-ins.user.js"
+        ],
+        "match": [
+          "https://instagram.com/*",
+          "https://www.instagram.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-ins/pure-ins.user.js",
+        "matches": [
+          [
+            "https",
+            "instagram.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "www.instagram.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-twitter/pure-twitter.user.js",
+      "repository": "squarezhong/pure-twitter",
+      "path": "pure-twitter.user.js",
+      "commit": "703bc20237092a8dc3d2348a474e79557301b787",
+      "blob": "ee836ed94cc4b0b1aca01ede885222f0d779a0a1",
+      "sha256": "d9a23dd48b3be39432b4c1bc2262241c2df00a9614799eca835f54e9550f8097",
+      "metadata": {
+        "name": [
+          "Pure Twitter"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-twitter"
+        ],
+        "version": [
+          "0.1.1"
+        ],
+        "description": [
+          "首页关注优先，清理推荐与显式广告，保留转帖、主动搜索及 Grok。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "match": [
+          "https://x.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-twitter/pure-twitter.user.js",
+        "matches": [
+          [
+            "https",
+            "x.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-weibo/pure-weibo.user.js",
+      "repository": "squarezhong/pure-weibo",
+      "path": "pure-weibo.user.js",
+      "commit": "a4bae2227d775028e75734dba7121a3860402fe4",
+      "blob": "38129f1a9283d6315c66797de99535f781d6c472",
+      "sha256": "cb95770c2f00f7de9bb2dc470c401e79e68fe6e66d6ab1a3b0bbf0787a2d90aa",
+      "metadata": {
+        "name": [
+          "Pure Weibo"
+        ],
+        "namespace": [
+          "pure-weibo"
+        ],
+        "version": [
+          "0.1.0"
+        ],
+        "description": [
+          "首页进入最新关注微博，清理推荐、热搜和显式广告，保留主动搜索、转发与播放。"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "match": [
+          "https://weibo.com/*",
+          "https://www.weibo.com/*",
+          "https://s.weibo.com/*",
+          "https://video.weibo.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "noframes": [
+          ""
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_addValueChangeListener",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-weibo/pure-weibo.user.js",
+        "matches": [
+          [
+            "https",
+            "weibo.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "www.weibo.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "s.weibo.com",
+            "^/.*$"
+          ],
+          [
+            "https",
+            "video.weibo.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": true,
+        "runAt": "document-start"
+      }
+    },
+    {
+      "id": "pure-zhihu/pure-zhihu.user.js",
+      "repository": "squarezhong/pure-zhihu",
+      "path": "pure-zhihu.user.js",
+      "commit": "aee88f74411a71f0f982b8c67318b925611f6f0a",
+      "blob": "01badd27a8a6c7507cf6309dfd044e359805c812",
+      "sha256": "2b5da9e4b9eab98e5085ba57a51d58e027a8b993c4d718d11d150a46a4d64cf3",
+      "metadata": {
+        "name": [
+          "Pure Zhihu"
+        ],
+        "author": [
+          "squarezhong"
+        ],
+        "namespace": [
+          "https://github.com/squarezhong/pure-zhihu"
+        ],
+        "version": [
+          "0.4.10"
+        ],
+        "description": [
+          "大幅简化知乎：默认进入关注流，隐藏广告、顶栏噪音和指定侧栏模块；严格模式过滤赞同动态及折叠动态入口。"
+        ],
+        "homepageURL": [
+          "https://github.com/squarezhong/pure-zhihu"
+        ],
+        "supportURL": [
+          "https://github.com/squarezhong/pure-zhihu/issues"
+        ],
+        "updateURL": [
+          "https://raw.githubusercontent.com/squarezhong/pure-zhihu/main/pure-zhihu.user.js"
+        ],
+        "downloadURL": [
+          "https://raw.githubusercontent.com/squarezhong/pure-zhihu/main/pure-zhihu.user.js"
+        ],
+        "match": [
+          "https://*.zhihu.com/*"
+        ],
+        "run-at": [
+          "document-start"
+        ],
+        "grant": [
+          "GM_getValue",
+          "GM_setValue",
+          "GM_registerMenuCommand"
+        ]
+      },
+      "spec": {
+        "id": "pure-zhihu/pure-zhihu.user.js",
+        "matches": [
+          [
+            "https",
+            "*.zhihu.com",
+            "^/.*$"
+          ]
+        ],
+        "excludes": [],
+        "noframes": false,
+        "runAt": "document-start"
+      }
+    }
+  ],
+  "skipped": []
+}
