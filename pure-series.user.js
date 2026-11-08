@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pure Series
 // @namespace    https://github.com/squarezhong/pure-series
-// @version      1.0.1
+// @version      1.0.2
 // @description  一次安装，按站点自动启用 Pure 系列网页净化脚本。
 // @author       squarezhong
 // @homepageURL  https://github.com/squarezhong/pure-series
@@ -1775,8 +1775,8 @@ pureSeriesRun({"id":"pure-linkedin/pure-linkedin.user.js","matches":[["https","w
 }).call(this, api.get, api.set, api.listen, api.menu);
 });
 
-// Source: https://github.com/squarezhong/pure-rednote/blob/f5f12793c3df33892dd1f3f301c8212f079dda06/pure-rednote.user.js
-// Original metadata: {"name":["Pure Rednote"],"namespace":["https://github.com/squarezhong/pure-rednote"],"version":["0.1.1"],"description":["首页打开关注名单，隐藏推荐大厅、搜索热榜和通知徽标，保留主动搜索与日常互动。"],"author":["squarezhong"],"homepageURL":["https://github.com/squarezhong/pure-rednote"],"supportURL":["https://github.com/squarezhong/pure-rednote/issues"],"updateURL":["https://raw.githubusercontent.com/squarezhong/pure-rednote/main/pure-rednote.user.js"],"downloadURL":["https://raw.githubusercontent.com/squarezhong/pure-rednote/main/pure-rednote.user.js"],"match":["https://xiaohongshu.com/*","https://www.xiaohongshu.com/*"],"run-at":["document-start"],"noframes":[""],"grant":["GM_getValue","GM_setValue","GM_addValueChangeListener","GM_registerMenuCommand"]}
+// Source: https://github.com/squarezhong/pure-rednote/blob/b9a0ab6acd91d25d9f96f03dbaa9157ee04c6f25/pure-rednote.user.js
+// Original metadata: {"name":["Pure Rednote"],"namespace":["https://github.com/squarezhong/pure-rednote"],"version":["0.1.2"],"description":["首页跳转个人主页，隐藏推荐大厅、搜索热榜和通知徽标，保留主动搜索与日常互动。"],"author":["squarezhong"],"homepageURL":["https://github.com/squarezhong/pure-rednote"],"supportURL":["https://github.com/squarezhong/pure-rednote/issues"],"updateURL":["https://raw.githubusercontent.com/squarezhong/pure-rednote/main/pure-rednote.user.js"],"downloadURL":["https://raw.githubusercontent.com/squarezhong/pure-rednote/main/pure-rednote.user.js"],"match":["https://xiaohongshu.com/*","https://www.xiaohongshu.com/*"],"run-at":["document-start"],"noframes":[""],"grant":["GM_getValue","GM_setValue","GM_addValueChangeListener","GM_registerMenuCommand"]}
 pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xiaohongshu.com","^/.*$"],["https","www.xiaohongshu.com","^/.*$"]],"excludes":[],"noframes":true,"runAt":"document-start"}, function (api) {
 (function (GM_getValue, GM_setValue, GM_addValueChangeListener, GM_registerMenuCommand) {
 (function () {
@@ -1786,7 +1786,7 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
   const KEY = 'pure-rednote-settings-v1', UI = 'pure-rednote-settings', HIDDEN = 'pure-rednote-hidden';
   const QUIET = 'pure-rednote-quiet', KEEP = 'pure-rednote-keep', NOTE = 'pure-rednote-notice';
   const OPTIONS = [
-    ['followingList', '首页和 logo 打开本人关注名单', true],
+    ['homeProfile', '首页和 logo 打开本人主页', true],
     ['notificationBadges', '隐藏通知红点和数字徽标', true],
     ['likeNotifications', '隐藏赞和收藏通知', true],
     ['navigation', '隐藏发现、RED、直播导航入口', true],
@@ -1794,7 +1794,11 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
     ['searchRecommendations', '隐藏搜索热词和猜你想搜', true]
   ];
   const defaults = Object.fromEntries(OPTIONS.map(([k, , v]) => [k, v]));
-  const normalize = v => ({ version: 1, ...Object.fromEntries(OPTIONS.map(([k, , d]) => [k, typeof v?.[k] === 'boolean' ? v[k] : d])) });
+  const normalize = v => {
+    // Preserve the previous home-navigation preference when upgrading.
+    const value = { ...v, homeProfile: v?.homeProfile ?? v?.followingList };
+    return { version: 1, ...Object.fromEntries(OPTIONS.map(([k, , d]) => [k, typeof value[k] === 'boolean' ? value[k] : d])) };
+  };
   const query = (s, root = document) => [...root.querySelectorAll(s)];
   const text = e => (e?.textContent || '').replace(/\s+/g, ' ').trim();
   const OWNED = `#${UI},#${NOTE},#pure-rednote-style`;
@@ -1818,29 +1822,20 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
     for (const el of next) if (!el.classList.contains(cls)) el.classList.add(cls);
     return next;
   }
-  function requestList() {
-    pending = { from: pathname(), until: Date.now() + 10000, profile: '', clicked: false };
+  function requestProfile() {
+    pending = { from: pathname(), until: Date.now() + 10000 };
     homeAttempted = true; schedule();
   }
-  function following() {
-    if (!settings.followingList) { pending = null; return; }
-    if (isHome() && !homeAttempted) requestList();
+  function openProfile() {
+    if (!settings.homeProfile) { pending = null; return; }
+    if (isHome() && !homeAttempted) requestProfile();
     const task = pending;
     if (!task) return;
-    if (Date.now() >= task.until) { pending = null; return; }
+    if (Date.now() >= task.until || pathname() !== task.from) { pending = null; return; }
     const me = ownProfile();
     if (!me) return;
-    const target = path(me);
-    if ((task.profile && task.profile !== target) || ![task.from, target].includes(pathname())) { pending = null; return; }
-    task.profile = target;
-    if (pathname() !== target) {
-      if (!task.clicked) { task.clicked = true; me.click(); }
-      return;
-    }
-    // Only the profile statistics row; never a Follow button on another account.
-    const root = document.querySelector('#userPageContainer,.user-page');
-    const entry = root && query('.clickable', root).find(e => query('.shows', e).some(s => text(s) === '关注'));
-    if (entry) { pending = null; entry.click(); }
+    pending = null;
+    if (pathname() !== path(me)) me.click();
   }
   function notifications(desired) {
     const roots = new Set(), parts = new Set();
@@ -1894,7 +1889,7 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
     roots.forEach(e => desired.add(e));
     let notice = document.getElementById(NOTE);
     if (!roots.length) { notice?.remove(); return; }
-    if (!notice) { notice = document.createElement('div'); notice.id = NOTE; notice.textContent = '推荐内容已隐藏。可以使用顶部搜索，或点击 logo 查看关注名单。'; }
+    if (!notice) { notice = document.createElement('div'); notice.id = NOTE; notice.textContent = '推荐内容已隐藏。可以使用顶部搜索，或从“我”进入个人主页。'; }
     const root = roots[0];
     if (notice.parentElement !== root.parentElement || notice.nextElementSibling !== root) root.before(notice);
   }
@@ -1925,7 +1920,7 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
       notifications(desired); search(desired); halls(desired);
       hidden = reconcile(hidden, desired, HIDDEN); pauseHidden();
     } finally { observe(); }
-    following();
+    openProfile();
   }
   function schedule() { if (!stopped && !frame) frame = requestAnimationFrame(apply); }
   function applySettings() { pending = null; homeAttempted = true; likeAttempt = null; schedule(); }
@@ -1941,8 +1936,8 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
       button{font:inherit;color:inherit;background:transparent;border:1px solid #8887;border-radius:8px;padding:7px 13px;cursor:pointer}
       button:focus-visible,input:focus-visible{outline:3px solid #9674e7;outline-offset:2px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.save{margin-left:auto;background:#6840b4;color:#fff}.note{font-size:12px;opacity:.8}.status{min-height:22px}.error{color:#d25536}
       @media(prefers-color-scheme:dark){dialog{color:var(--pure-rednote-text,#eee);background:var(--pure-rednote-background,#242424)}}
-    </style><dialog aria-labelledby="pr-title"><h2 id="pr-title">Pure Rednote</h2><p>让关注成为首页，让浏览由你决定。</p>
-      <form><div class="grid"></div><p class="note">首页打开原生关注名单。保留主动搜索和日常互动；关闭规则可恢复隐藏内容。</p>
+    </style><dialog aria-labelledby="pr-title"><h2 id="pr-title">Pure Rednote</h2><p>让浏览由你决定。</p>
+      <form><div class="grid"></div><p class="note">首页跳转本人主页。保留主动搜索和日常互动；关闭规则可恢复隐藏内容。</p>
       <div class="actions"><button type="button" class="reset">恢复默认</button><button type="button" class="cancel">取消</button><button type="submit" class="save">保存</button></div>
       <p class="status" role="status" aria-live="polite"></p></form></dialog>`;
     dialog = shadow.querySelector('dialog'); status = shadow.querySelector('.status');
@@ -1977,7 +1972,7 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
     try {
       if (typeof GM_setValue !== 'function') throw new Error('Storage unavailable');
       await GM_setValue(KEY, next);
-      settings = next; applySettings(); setStatus('已保存；支持的油猴管理器会同步到其他 小红书 标签页。');
+      settings = next; applySettings(); dialog.close();
     } catch (_) { setStatus('保存失败，当前规则未改变。请检查油猴存储后重试。', true); }
     finally { saving = false; query('button,input', ui.shadowRoot).forEach(e => { e.disabled = false; }); }
   }
@@ -2004,8 +1999,8 @@ pureSeriesRun({"id":"pure-rednote/pure-rednote.user.js","matches":[["https","xia
   document.addEventListener('click', e => {
     if (e.isTrusted && pending) { pending = null; homeAttempted = true; }
     const logo = e.target.closest?.('a#link-guide');
-    if (logo && settings.followingList && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey && e.button === 0) {
-      e.preventDefault(); e.stopImmediatePropagation(); requestList();
+    if (logo && settings.homeProfile && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey && e.button === 0) {
+      e.preventDefault(); e.stopImmediatePropagation(); requestProfile();
     }
   }, true);
   document.addEventListener('play', e => { if (e.target.matches?.('video') && e.target.closest(`.${HIDDEN}`)) e.target.pause(); }, true);

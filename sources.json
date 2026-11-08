@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "sources": [
     {
       "id": "pure-bilibili/pure-bilibili.user.js",
@@ -277,9 +277,9 @@
       "id": "pure-rednote/pure-rednote.user.js",
       "repository": "squarezhong/pure-rednote",
       "path": "pure-rednote.user.js",
-      "commit": "f5f12793c3df33892dd1f3f301c8212f079dda06",
-      "blob": "8457e15e3c21a17c5c11d5b6cc0c18707e8e4c7f",
-      "sha256": "1ae8d32d8e37342fcc8bfd2d7116dcd41f6ddbfe85c1c55adc84d86c479a4e08",
+      "commit": "b9a0ab6acd91d25d9f96f03dbaa9157ee04c6f25",
+      "blob": "1db9054e70f13eeb4fc5c11c1edb1bff1484af53",
+      "sha256": "b6595b51e2f038ea4e2214f91c502405352ecff3ed5020f0fd8708519da3191b",
       "metadata": {
         "name": [
           "Pure Rednote"
@@ -288,10 +288,10 @@
           "https://github.com/squarezhong/pure-rednote"
         ],
         "version": [
-          "0.1.1"
+          "0.1.2"
         ],
         "description": [
-          "首页打开关注名单，隐藏推荐大厅、搜索热榜和通知徽标，保留主动搜索与日常互动。"
+          "首页跳转个人主页，隐藏推荐大厅、搜索热榜和通知徽标，保留主动搜索与日常互动。"
         ],
         "author": [
           "squarezhong"
