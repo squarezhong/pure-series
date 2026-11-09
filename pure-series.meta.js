@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pure Series
 // @namespace    https://github.com/squarezhong/pure-series
-// @version      1.0.2
+// @version      1.0.3
 // @description  一次安装，按站点自动启用 Pure 系列网页净化脚本。
 // @author       squarezhong
 // @homepageURL  https://github.com/squarezhong/pure-series

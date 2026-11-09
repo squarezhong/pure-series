@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "sources": [
     {
       "id": "pure-bilibili/pure-bilibili.user.js",
@@ -153,9 +153,9 @@
       "id": "pure-ins/pure-ins.user.js",
       "repository": "squarezhong/pure-ins",
       "path": "pure-ins.user.js",
-      "commit": "a44c3a55c59e632600c0eec0457ddac437107d80",
-      "blob": "6f1312058f52a9074454ea2dc2ddc016eba265b5",
-      "sha256": "fa7a75e88f4b16fd154af11aba7e13456f0d76e204d232aed09c84ad850906ed",
+      "commit": "c1e7e28c2b6982149fd5990ebafef51f64025226",
+      "blob": "68af91455ca31b97b4cd8f8792fc7bf7625f9f3d",
+      "sha256": "a85ecccb92e8ab1b1648c64a5887d8b558591b2fa52e2f3000ac2be416239001",
       "metadata": {
         "name": [
           "Pure Ins"
@@ -164,10 +164,10 @@
           "https://github.com/squarezhong/pure-ins"
         ],
         "version": [
-          "0.2.0"
+          "0.2.1"
         ],
         "description": [
-          "关注优先，清理 Instagram 推荐与显式广告，保留主动搜索、帖子、Stories 和日常互动。"
+          "从个人主页开始，清理 Instagram 推荐与显式广告，保留主动搜索、帖子、Stories 和日常互动。"
         ],
         "author": [
           "squarezhong"

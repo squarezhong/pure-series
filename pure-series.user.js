@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pure Series
 // @namespace    https://github.com/squarezhong/pure-series
-// @version      1.0.2
+// @version      1.0.3
 // @description  一次安装，按站点自动启用 Pure 系列网页净化脚本。
 // @author       squarezhong
 // @homepageURL  https://github.com/squarezhong/pure-series
@@ -894,8 +894,8 @@ pureSeriesRun({"id":"pure-douyin/pure-douyin.user.js","matches":[["https","www.d
 }).call(this, api.get, api.set, api.listen, api.menu);
 });
 
-// Source: https://github.com/squarezhong/pure-ins/blob/a44c3a55c59e632600c0eec0457ddac437107d80/pure-ins.user.js
-// Original metadata: {"name":["Pure Ins"],"namespace":["https://github.com/squarezhong/pure-ins"],"version":["0.2.0"],"description":["关注优先，清理 Instagram 推荐与显式广告，保留主动搜索、帖子、Stories 和日常互动。"],"author":["squarezhong"],"homepageURL":["https://github.com/squarezhong/pure-ins"],"supportURL":["https://github.com/squarezhong/pure-ins/issues"],"updateURL":["https://raw.githubusercontent.com/squarezhong/pure-ins/main/pure-ins.user.js"],"downloadURL":["https://raw.githubusercontent.com/squarezhong/pure-ins/main/pure-ins.user.js"],"match":["https://instagram.com/*","https://www.instagram.com/*"],"run-at":["document-start"],"noframes":[""],"grant":["GM_getValue","GM_setValue","GM_addValueChangeListener","GM_registerMenuCommand"]}
+// Source: https://github.com/squarezhong/pure-ins/blob/c1e7e28c2b6982149fd5990ebafef51f64025226/pure-ins.user.js
+// Original metadata: {"name":["Pure Ins"],"namespace":["https://github.com/squarezhong/pure-ins"],"version":["0.2.1"],"description":["从个人主页开始，清理 Instagram 推荐与显式广告，保留主动搜索、帖子、Stories 和日常互动。"],"author":["squarezhong"],"homepageURL":["https://github.com/squarezhong/pure-ins"],"supportURL":["https://github.com/squarezhong/pure-ins/issues"],"updateURL":["https://raw.githubusercontent.com/squarezhong/pure-ins/main/pure-ins.user.js"],"downloadURL":["https://raw.githubusercontent.com/squarezhong/pure-ins/main/pure-ins.user.js"],"match":["https://instagram.com/*","https://www.instagram.com/*"],"run-at":["document-start"],"noframes":[""],"grant":["GM_getValue","GM_setValue","GM_addValueChangeListener","GM_registerMenuCommand"]}
 pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.com","^/.*$"],["https","www.instagram.com","^/.*$"]],"excludes":[],"noframes":true,"runAt":"document-start"}, function (api) {
 (function (GM_getValue, GM_setValue, GM_addValueChangeListener, GM_registerMenuCommand) {
 (function () {
@@ -906,7 +906,7 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
   const NOTE = 'pure-ins-notice';
   const QUIET = 'pure-ins-quiet-notifications', KEEP = 'pure-ins-notification-part';
   const OPTIONS = [
-    ['followingList', '首页和 logo 打开自己的关注名单', true],
+    ['profileHome', '首页和 logo 打开个人主页', true],
     ['hideHome', '隐藏 Home 入口', true],
     ['ads', '清理显式广告', true], ['modules', '清理推荐关注与相关推荐', true],
     ['explore', '清理发现推荐网格（保留主动搜索）', true],
@@ -919,7 +919,6 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
   const text = e => (e?.textContent || '').replace(/\s+/g, ' ').trim();
   const label = e => e?.getAttribute('aria-label') || e?.querySelector('svg[aria-label]')?.getAttribute('aria-label') || text(e);
   const words = {
-    following: /^(Following|关注中|已关注|已關注|追蹤中|正在关注|正在追蹤|关注|追蹤)$/i,
     follow: /^(Follow|Follow back|关注|关注回去|關注|追蹤|追蹤對方|回关|回追)$/i,
     suggested: /^(Suggested for you|Suggested posts|Recommended for you|为你推荐|為你推薦|推荐帖子|推薦貼文|推薦的貼文|为你推荐的帖子|为你推荐的用户|為你推薦的用戶|为你推荐的账户)$/i,
     ad: /^(Sponsored|Ad|Advertisement|广告|廣告|赞助内容|贊助內容|赞助|贊助)$/i,
@@ -935,7 +934,10 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
   };
   const EDITOR = 'form,[contenteditable="true"],textarea,[role="textbox"]';
   const OWNED = `#${UI},#${NOTE},#pure-ins-style`;
-  const normalize = value => ({ version: 1, ...Object.fromEntries(OPTIONS.map(([k, , v]) => [k, typeof value?.[k] === 'boolean' ? value[k] : v])) });
+  const normalize = value => ({ version: 1, ...Object.fromEntries(OPTIONS.map(([k, , v]) => {
+    const saved = value?.[k] ?? (k === 'profileHome' ? value?.followingList : undefined);
+    return [k, typeof saved === 'boolean' ? saved : v];
+  })) });
   let settings;
   try { settings = normalize(typeof GM_getValue === 'function' ? GM_getValue(KEY, null) : null); }
   catch (_) { settings = normalize(null); }
@@ -944,7 +946,7 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
   let quietRoots = new Set(), quietParts = new Set();
   const dirtyCards = new Set(), headers = new WeakMap();
   let adCards = new Set(), fullScan = true, shellDirty = true, shellHidden = new Set();
-  let pendingList = null, listAttempted = false, homeIntent = false;
+  let pendingProfile = null, profileAttempted = false, homeIntent = false;
   let ui, dialog, status, lastFocus, saving = false;
 
   function urlOf(a) {
@@ -995,29 +997,19 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
     return navLinks().find(a => profileLink(a) &&
       (/^(Profile|个人主页|個人檔案|個人主頁)$/i.test(text(a)) || query('img', a).some(isAvatar)));
   }
-  function requestList() {
-    pendingList = { until: Date.now() + 10000, from: location.pathname, profile: '', clicked: false };
-    listAttempted = true;
-    enterFollowing();
-  }
-  function enterFollowing() {
-    if (!settings.followingList) { pendingList = null; return; }
-    if (!pendingList && !listAttempted && location.pathname === '/' && !history.state?.pureInsHome && !homeIntent) requestList();
-    const task = pendingList;
+  function enterProfile(requested = false) {
+    if (!settings.profileHome) { pendingProfile = null; return; }
+    if (requested || !profileAttempted && location.pathname === '/' && !history.state?.pureInsHome && !homeIntent) {
+      pendingProfile = { until: Date.now() + 10000, from: location.pathname };
+      profileAttempted = true;
+    }
+    const task = pendingProfile;
     if (!task) return;
-    if (Date.now() > task.until) { pendingList = null; return; }
+    if (Date.now() > task.until || location.pathname !== task.from) { pendingProfile = null; return; }
     const profile = ownProfile(), path = profile && urlOf(profile).pathname;
     if (!path) return;
-    if (task.profile && task.profile !== path || ![task.from, path].includes(location.pathname)) { pendingList = null; return; }
-    task.profile = path;
-    if (location.pathname !== path) {
-      if (!task.clicked) { task.clicked = true; profile.click(); }
-      return;
-    }
-    if (query('[role="dialog"] h1,[role="dialog"] h2').some(e => words.following.test(text(e)))) { pendingList = null; return; }
-    const entry = query('main a,main button,[role="main"] a,[role="main"] button').find(e =>
-      !e.closest('article,[role="dialog"]') && /^(?:[\d,.万萬]+\s*(?:following|关注|關注|追蹤中)|(?:关注|關注|追蹤中)\s*[\d,.万萬]+)$/i.test(text(e)));
-    if (entry) { pendingList = null; entry.click(); }
+    pendingProfile = null;
+    if (location.pathname !== path) profile.click();
   }
   function navigation(desired) {
     if (settings.hideHome) for (const a of navLinks()) {
@@ -1233,7 +1225,7 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
         if (homeIntent && location.pathname === '/') {
           history.replaceState({ ...history.state, pureInsHome: true }, ''); homeIntent = false;
         }
-        if (location.pathname !== '/') listAttempted = false;
+        if (location.pathname !== '/') profileAttempted = false;
         const nextId = postId(location.pathname);
         // Explicit clicks/popstate reset the anchor separately; automatic changes
         // within a reel session must not promote a recommended video to the target.
@@ -1255,7 +1247,7 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
       hidden = desired;
       fullScan = shellDirty = false;
     } finally { observe(); }
-    enterFollowing();
+    enterProfile();
   }
   function schedule(all = true) {
     if (all) fullScan = shellDirty = true;
@@ -1279,8 +1271,8 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
       button{font:inherit;color:inherit;background:transparent;border:1px solid #8887;border-radius:8px;padding:7px 13px;cursor:pointer}
       button:focus-visible,input:focus-visible{outline:3px solid #9674e7;outline-offset:2px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.save{margin-left:auto;background:#6840b4;color:#fff}.note{font-size:12px;opacity:.8}.status{min-height:22px}.error{color:#d25536}
       @media(prefers-color-scheme:dark){dialog{color:var(--pure-ins-text,#eee);background:var(--pure-ins-background,#242424)}}
-    </style><dialog aria-labelledby="pi-title"><h2 id="pi-title">Pure Ins</h2><p>让关注成为首页，让浏览由你决定。</p>
-      <form><div class="grid"></div><p class="note">首页只过滤明确广告，不按关注关系过滤。可见视频使用原生播放；隐藏视频暂停。关注名单不可用时保留当前页面。</p>
+    </style><dialog aria-labelledby="pi-title"><h2 id="pi-title">Pure Ins</h2><p>从个人主页开始，让浏览由你决定。</p>
+      <form><div class="grid"></div><p class="note">首页只过滤明确广告，不按关注关系过滤。可见视频使用原生播放；隐藏视频暂停。无法识别个人主页入口时保留当前页面。</p>
       <div class="actions"><button type="button" class="reset">恢复默认</button><button type="button" class="cancel">取消</button><button type="submit" class="save">保存</button></div>
       <p class="status" role="status" aria-live="polite"></p></form></dialog>`;
     dialog = shadow.querySelector('dialog'); status = shadow.querySelector('.status');
@@ -1347,11 +1339,11 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
         }
       }
       if (dirtyCards.size || shellDirty) schedule(false);
-      if (pendingList) enterFollowing();
+      if (pendingProfile) enterProfile();
     });
     observe(); schedule(); clearInterval(timer);
     // Sandbox-safe route detection; no interception of Instagram's private APIs.
-    timer = setInterval(() => { if (lastURL !== location.href) schedule(); if (pendingList) enterFollowing(); }, 500);
+    timer = setInterval(() => { if (lastURL !== location.href) schedule(); if (pendingProfile) enterProfile(); }, 500);
   }
   function resetReel() { reelTarget = null; reelSession = false; reelAnchor = ''; reelIdentity = ''; schedule(); }
   try {
@@ -1372,11 +1364,11 @@ pureSeriesRun({"id":"pure-ins/pure-ins.user.js","matches":[["https","instagram.c
   document.addEventListener('click', e => {
     const a = e.target.closest?.('a[href]');
     const u = a && urlOf(a);
-    if (e.isTrusted && pendingList) pendingList = null;
+    if (e.isTrusted && pendingProfile) pendingProfile = null;
     if (a && local(u) && u.pathname === '/' && !a.closest(`main,[role="main"],article,[role="dialog"]`) && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) {
-      if (label(a) === 'Instagram' && settings.followingList) { e.preventDefault(); e.stopImmediatePropagation(); requestList(); return; }
+      if (label(a) === 'Instagram' && settings.profileHome) { e.preventDefault(); e.stopImmediatePropagation(); enterProfile(true); return; }
       if (/^(Home|首页|首頁|主页|主頁)$/i.test(label(a))) {
-        pendingList = null; homeIntent = true; listAttempted = true;
+        pendingProfile = null; homeIntent = true; profileAttempted = true;
         if (location.pathname === '/') { history.replaceState({ ...history.state, pureInsHome: true }, ''); homeIntent = false; }
       }
     }
